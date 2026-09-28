@@ -1,2 +1,0 @@
-[console_scripts]
-adsrank-audit = ads_rank_lab.experiments.dataset_analysis:main

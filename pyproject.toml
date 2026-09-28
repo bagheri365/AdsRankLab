@@ -18,6 +18,9 @@ dev = [
     "pytest>=8.0",
 ]
 
+[project.scripts]
+adsrank-audit = "ads_rank_lab.experiments.dataset_analysis:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
