@@ -23,6 +23,8 @@ Milestone 1 foundation:
 
 The repository does **not** include the iPinYou dataset. See `data/README.md` for expected local layout.
 
+Raw Season 2/3 contest logs can be read directly from their original `.txt.bz2` files; see `docs/raw_ingestion.md`.
+
 ## Development
 
 ```bash
