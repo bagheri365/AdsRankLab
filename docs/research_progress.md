@@ -26,6 +26,15 @@ Status: **in progress**
 - [x] Orphan-click/conversion cleaning protocol
 - [x] Unit tests for core Milestone 1 utilities
 
+### Milestone 2 — pCTR baseline
+
+- [x] Define won-impression supervised population
+- [x] Freeze chronological Season 2 split
+- [x] Implement leakage-safe logistic-regression baseline
+- [x] Add discrimination, loss, Brier, and calibration metrics
+- [x] Add advertiser-level evaluation summaries
+- [ ] Run the full Season 2 baseline and preserve result artifacts
+
 ### Next
 
 - [ ] Add exact iPinYou season/file setup instructions after local dataset inspection
