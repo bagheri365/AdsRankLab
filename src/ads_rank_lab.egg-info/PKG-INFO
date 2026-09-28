@@ -19,7 +19,7 @@ The project is intentionally narrower than a production ad platform. It focuses 
 
 ## Research question
 
-**How should an advertising system combine predicted response and economic value when making auction-time decisions, and when do prediction or calibration errors lead to worse allocation outcomes?**
+**How should an advertising system combine predicted user response and economic value when making auction-time decisions, and when do prediction or calibration errors lead to worse allocation outcomes?**
 
 ## Current status
 
@@ -28,7 +28,9 @@ Milestone 1 foundation:
 - reproducible Python package;
 - raw/processed data conventions;
 - schema-oriented loading helpers;
+- canonical iPinYou schema validation;
 - deterministic train/validation/test splitting;
+- descriptive dataset-audit CLI;
 - basic preprocessing utilities;
 - initial tests.
 
@@ -40,6 +42,16 @@ The repository does **not** include the iPinYou dataset. See `data/README.md` fo
 python -m pip install -e ".[dev]"
 pytest
 ```
+
+## Dataset audit
+
+After placing a real RTB log under `data/raw/`, create a descriptive JSON audit with:
+
+```bash
+adsrank-audit data/raw/<file> --output artifacts/results/dataset_audit.json
+```
+
+The audit reports schema coverage, missingness, click/conversion prevalence, bid/pay/floor summaries, and selected segment cardinalities. It is descriptive only and does not infer unobserved counterfactual outcomes.
 
 ## Project structure
 
