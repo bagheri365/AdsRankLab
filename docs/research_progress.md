@@ -34,6 +34,7 @@ Status: **in progress**
 - [x] Add discrimination, loss, Brier, and calibration metrics
 - [x] Add advertiser-level evaluation summaries
 - [ ] Run the full Season 2 baseline and preserve result artifacts
+- [x] Add validation-fitted intercept and Platt calibration experiment
 
 ### Next
 
