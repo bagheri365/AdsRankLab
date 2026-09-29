@@ -37,8 +37,9 @@ class PctrBaselineConfig:
     numeric_features: tuple[str, ...] = DEFAULT_NUMERIC_FEATURES
     categorical_features: tuple[str, ...] = DEFAULT_CATEGORICAL_FEATURES
     c: float = 1.0
-    max_iter: int = 1000
+    max_iter: int = 3000
     class_weight: str | None = None
+    tol: float = 1e-6
 
 
 def add_time_features(frame: pd.DataFrame) -> pd.DataFrame:
@@ -79,6 +80,7 @@ def build_pctr_pipeline(config: PctrBaselineConfig | None = None) -> Pipeline:
         max_iter=config.max_iter,
         solver="saga",
         class_weight=config.class_weight,
+        tol=config.tol,
     )
 
     return Pipeline([("features", preprocessor), ("model", model)])

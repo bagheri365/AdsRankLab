@@ -48,7 +48,6 @@ python -m ads_rank_lab.experiments.pctr_baseline
 
 The logistic baseline records the fitted iteration count and whether the
 optimizer stopped before `max_iter`. Numeric variables are standardized with
-`StandardScaler(with_mean=False)` and the default iteration cap is 1000.
+`StandardScaler(with_mean=False)` and the default iteration cap is 3000 and the tolerance is `1e-6`.
 
-A run that reaches `max_iter` is not considered the frozen baseline result even
-if its predictive metrics are otherwise usable.
+The experiment records whether the solver stopped before `max_iter` and whether any `ConvergenceWarning` was emitted. Train metrics are persisted alongside validation and test metrics so probability-level bias can be separated from out-of-time drift.

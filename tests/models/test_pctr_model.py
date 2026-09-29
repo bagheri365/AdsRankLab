@@ -34,5 +34,7 @@ def test_pipeline_fits_small_sparse_problem() -> None:
     assert ((probabilities >= 0) & (probabilities <= 1)).all()
 
 
-def test_default_config_allows_more_iterations_for_rare_event_fit() -> None:
-    assert PctrBaselineConfig().max_iter == 1000
+def test_default_config_uses_tight_stability_settings() -> None:
+    config = PctrBaselineConfig()
+    assert config.max_iter == 3000
+    assert config.tol == 1e-6

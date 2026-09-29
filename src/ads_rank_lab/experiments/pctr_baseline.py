@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import warnings
 from pathlib import Path
 
 import pandas as pd
+from sklearn.exceptions import ConvergenceWarning
 
 from ads_rank_lab.data.pctr import load_won_impression_day
 from ads_rank_lab.evaluation.pctr import evaluate_by_advertiser, evaluate_pctr
@@ -37,27 +39,41 @@ def run_season2_baseline(dataset_root: str | Path, *, config: PctrBaselineConfig
 
     features = list(feature_columns(config))
     pipeline = build_pctr_pipeline(config)
-    pipeline.fit(train[features], train["clicked"])
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always", ConvergenceWarning)
+        pipeline.fit(train[features], train["clicked"])
 
+    convergence_warnings = [
+        str(item.message)
+        for item in caught
+        if issubclass(item.category, ConvergenceWarning)
+    ]
+
+    train_prob = pipeline.predict_proba(train[features])[:, 1]
     validation_prob = pipeline.predict_proba(validation[features])[:, 1]
     test_prob = pipeline.predict_proba(test[features])[:, 1]
 
     fitted_model = pipeline.named_steps["model"]
     iterations = int(fitted_model.n_iter_.max())
-    converged = iterations < config.max_iter
+    stopped_before_max_iter = iterations < config.max_iter
+    warning_free_fit = len(convergence_warnings) == 0
 
     results = {
         "model": {
             "type": "logistic_regression",
             "solver": "saga",
             "max_iter": config.max_iter,
+            "tol": config.tol,
             "iterations": iterations,
-            "converged": converged,
+            "stopped_before_max_iter": stopped_before_max_iter,
+            "warning_free_fit": warning_free_fit,
+            "convergence_warnings": convergence_warnings,
             "numeric_scaling": "StandardScaler(with_mean=False)",
         },
         "population": "won_impressions_only",
         "split": {k: list(v) for k, v in SEASON2_SPLIT.items()},
         "features": features,
+        "train": evaluate_pctr(train["clicked"], train_prob),
         "validation": evaluate_pctr(validation["clicked"], validation_prob),
         "test": evaluate_pctr(test["clicked"], test_prob),
     }
